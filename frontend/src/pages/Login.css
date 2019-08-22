@@ -1,8 +1,29 @@
 .login-container{
     height: 100%;
     display: flex;
+    flex-direction: row;
     justify-content: center;
     align-items: center;
+}
+
+.login-container img{
+    max-width: 500px;    
+    max-height: 500px;
+}
+
+.login-container div p{
+    font-size: 16px;
+    color: #666;
+    padding: 2px 0;
+    margin: 0px !important;
+}
+
+.login-container div a{
+    text-decoration: none;
+    color: #666;
+    margin: 10px 0;
+    align-self: flex-end;
+    cursor: pointer;
 }
 
 .login-container form{
@@ -12,22 +33,29 @@
     flex-direction: column;
 }
 
-.login-container form input{
-    margin-top: 20px;
+.login-container form div{
+    width: 100%;
+    max-width: 300px;
+    display: flex;
+    flex-direction: column;
+}
+
+.login-container form div input{
+    margin: 5px 0;
     border: 1px solid #ddd;
     border-radius: 4px;
     height: 48px;
-    padding: 0 20px;
+    padding: 0 10px;
     font-size: 16px;
     color: #666;
 }
 
-.login-container form input::placeholder{
+.login-container form div input::placeholder{
     color: #999;
 }
 
-.login-container form button{
-    margin-top: 10px;
+.login-button{
+    margin: 5px 0;
     border: 0;
     border-radius: 4px;
     height: 48px;
@@ -36,4 +64,47 @@
     font-weight: bold;
     color: white;
     cursor: pointer;
+}
+
+.login-container form div.select-type, .login-container form div.roles{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.roles button{
+    border: 0;
+    border-radius: 4px;
+    height: 48px;
+    font-size: 16px;
+    background-color: rgb(190, 190, 190);
+    cursor: pointer;
+    font-weight: bold;
+    color: #fff;
+    width: 45%;
+    margin-bottom: 20px;
+}
+
+.selected-role{
+    background-color: #df4723 !important;
+}
+
+.register-button{
+    margin-top: 5px;
+    border: 0;
+    border-radius: 4px;
+    height: 48px;
+    font-size: 16px;
+    background-color: #1758aa;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+}
+
+.selected-type{
+    border-bottom: 3px solid #df4723;
+}
+
+hr{
+    margin: 7px;
 }

@@ -10,9 +10,9 @@ html, body, #root{
 }
 
 body{
-    background-color: #f5f5f5;
+    background-color: #fbfbfb;
 }
 
-body, input, button{
+body, input, button, p{
     font-family: Arial, Helvetica, sans-serif;
 }
