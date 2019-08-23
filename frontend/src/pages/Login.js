@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import './Login.css';
 import logo from '../assets/logo.svg';
 import api from '../services/api';
+import { Alert, Spinner } from 'reactstrap';
+const regexEmail = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
 export default function Login({ history }) {
     const [type, setType] = useState('Login');
@@ -10,6 +12,11 @@ export default function Login({ history }) {
     const [email, setEmail] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [password, setPassword] = useState('');
+    const [alert, setAlert] = useState(['', false]);
+    const [msgAlert, setMsgAlert] = useState('');
+    const [confirmed, setConfirmed] = useState('Senhas não conferem');
+    const [isLoading, setIsLoading] = useState(false);
+
 
     function login(e) {
         e.preventDefault();
@@ -21,17 +28,85 @@ export default function Login({ history }) {
 
     async function register(e) {
         e.preventDefault();
+        setIsLoading(true);
 
-        const response = await api.post('/auth/register', {
-            name,
-            email,
-            password,
-            role
-        });
+        try {
+            if (verifyFields()){
+                const response = await api.post('/auth/register', {
+                    name,
+                    email,
+                    password,
+                    role
+                });
+                console.log(response);
 
-        console.log(response);
+                const { data, status } = response;
 
-        history.push("/dashboard")
+                if (status === 200) {
+                    document.getElementById('login-id').classList.add("selected-type");
+                    document.getElementById('register-id').classList.remove("selected-type");
+                    document.getElementsByClassName("link-register")[0].style.display = 'none';
+                    document.getElementsByClassName("link-login")[0].style.display = 'flex';
+                    setType('Login');
+                    setAlert(['success', true]);
+                    setMsgAlert('Usuário cadastrado com sucesso! Realize o login')
+                    setIsLoading(false);
+                } else {
+                    setAlert(['danger', true]);
+                    setMsgAlert('Falha ao cadastrar usuário!');
+                    setIsLoading(false);
+                }
+            }else{
+                setIsLoading(false);
+            }
+        } catch (error) {
+            setAlert(['danger', true]);
+            setMsgAlert('Falha ao cadastrar usuário! Tente novamente.');
+            setIsLoading(false);
+        }
+
+        // history.push("/dashboard")
+    }
+
+    function verifyFields() {
+        if(name === '' || email === '' || password === '' || confirmPassword === '' || role === ''){
+            setAlert(['danger', true]);
+            setMsgAlert('Campos obrigatórios não preenchidos, confira os dados.');
+            return false;
+        }
+
+        if (email.match(regexEmail) === null) {
+            setAlert(['danger', true]);
+            setMsgAlert('E-mail com formato inválido.');
+            return false;
+        }
+
+        if (password !== confirmPassword) {
+            setAlert(['danger', true]);
+            setMsgAlert('Senhas não conferem.');
+            return false;
+        }
+
+        if (password === confirmPassword && password.length < 8) {
+            setAlert(['danger', true]);
+            setMsgAlert('Senha muito curta, minimo de 8 caracteres.');
+            return false;
+        }
+
+        if (name.length < 10) {
+            setAlert(['danger', true]);
+            setMsgAlert('Nome muito curto, adicione mais caracteres.');
+            return false;
+        }
+
+        if (role === '') {
+            setAlert(['danger', true]);
+            setMsgAlert('Selecione o tipo de acesso.');
+            return false;
+        }
+
+
+        return true
     }
 
     function changeType({ target }) {
@@ -57,7 +132,7 @@ export default function Login({ history }) {
         }
     }
 
-    function changeRole({ target }){
+    function changeRole({ target }) {
         let { value } = target;
 
         let selected_teacher = document.getElementById('teacher-id');
@@ -65,22 +140,35 @@ export default function Login({ history }) {
 
         console.log(value);
 
-        if(value === 'teacher' && value !== role){
+        if (value === 'teacher' && value !== role) {
             selected_teacher.classList.add('selected-role');
             selected_student.classList.remove('selected-role');
             setRole(value);
 
-        }else if(value === 'student' && value !== role){
+        } else if (value === 'student' && value !== role) {
             selected_teacher.classList.remove('selected-role');
             selected_student.classList.add('selected-role');
             setRole(value);
         }
     }
 
+    function showTextConfirm() {
+        document.getElementsByClassName('txt-confirm')[0].style.display = 'flex';
+    }
+
     return (
         <div className="row login-container">
             <img className="col-sm-12 col-md-6 col-lg-6" src={logo} alt="Spectial" />
             <form className="col-sm-12 col-md-6 col-lg-6">
+
+                {
+                    alert[1] ?
+
+                        <Alert style={{ fontSize: 12 }} color={alert[0]}>
+                            {msgAlert}
+                        </Alert>
+                        : null
+                }
                 <div className="select-type">
                     <a onClick={changeType} id="login-id" className="selected-type">Login</a>
                     <a onClick={changeType} id="register-id">Registrar-se</a>
@@ -113,7 +201,7 @@ export default function Login({ history }) {
                     </button>
                 </div>
                 <div className="link-register" style={{ display: 'none' }}>
-                    <p>Nome completo</p>
+                    <p>Nome completo *</p>
                     <input
                         placeholder="Digite seu nome completo"
                         value={name}
@@ -121,15 +209,16 @@ export default function Login({ history }) {
                             setName(e.target.value);
                         }}
                     />
-                    <p>E-mail</p>
+                    <p>E-mail *</p>
                     <input
+                        type="email"
                         placeholder="Digite seu e-mail"
                         value={email}
                         onChange={(e) => {
                             setEmail(e.target.value);
                         }}
                     />
-                    <p>Senha</p>
+                    <p>Senha *</p>
                     <input
                         placeholder="Digite a senha"
                         value={password}
@@ -138,16 +227,26 @@ export default function Login({ history }) {
                         }}
                         type="password"
                     />
-                    <p>Confirme a senha</p>
+                    <p>Confirme a senha *</p>
                     <input
+                        onFocus={showTextConfirm}
                         placeholder="Digite a senha"
                         value={confirmPassword}
                         onChange={(e) => {
+                            let text = document.getElementsByClassName('txt-confirm')[0];
                             setConfirmPassword(e.target.value);
+                            if (e.target.value === password) {
+                                text.classList.add('confirmed');
+                                setConfirmed("Senhas conferem");
+                            } else {
+                                text.classList.remove('confirmed');
+                                setConfirmed("Senhas não conferem");
+                            }
                         }}
                         type="password"
                     />
-                    <p>Tipo de acesso</p>
+                    <p className="txt-confirm" style={{ display: 'none' }}>{confirmed}</p>
+                    <p>Tipo de acesso *</p>
                     <div className="roles">
                         <button
                             id="teacher-id"
@@ -169,10 +268,17 @@ export default function Login({ history }) {
 
                     <button
                         onClick={register}
-                        type="button"
+                        type="submit"
                         className="register-button"
                     >
-                        Enviar
+
+                        {
+                            isLoading ?
+                                <Spinner color="light" style={{ marginLeft: '50%', width: '1rem', height: '1rem', alignSelf: 'center' }} />
+                                :
+                                "Enviar"
+                        }
+
                     </button>
                 </div>
             </form>

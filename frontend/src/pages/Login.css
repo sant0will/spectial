@@ -12,7 +12,7 @@
 }
 
 .login-container div p{
-    font-size: 16px;
+    font-size: 14px;
     color: #666;
     padding: 2px 0;
     margin: 0px !important;
@@ -20,7 +20,6 @@
 
 .login-container div a{
     text-decoration: none;
-    color: #666;
     margin: 10px 0;
     align-self: flex-end;
     cursor: pointer;
@@ -44,9 +43,9 @@
     margin: 5px 0;
     border: 1px solid #ddd;
     border-radius: 4px;
-    height: 48px;
+    height: 40px;
     padding: 0 10px;
-    font-size: 16px;
+    font-size: 14px;
     color: #666;
 }
 
@@ -99,6 +98,17 @@
     font-weight: bold;
     color: white;
     cursor: pointer;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-container div p.txt-confirm{
+    font-size: 12px;
+    color: #f00;
+}
+
+.confirmed{
+    color: #37aa17 !important;
 }
 
 .selected-type{
