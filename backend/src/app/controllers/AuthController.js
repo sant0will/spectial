@@ -7,6 +7,12 @@ const router = express.Router();
 const crypto = require('crypto');
 const mailer = require('../../modules/mailer');
 
+function generateToken(params = {}){
+    return jwt.sign(params, authConfig.secret, {
+        expiresIn: 86400,
+    });
+}
+
 router.post("/register", async (req, res) => {
     try {
 
@@ -20,14 +26,18 @@ router.post("/register", async (req, res) => {
 
         user.password = undefined;
 
-        return res.send(user);
+        return res.send({ 
+            user, 
+            token: generateToken({ id: user.id })
+        });
+        
     } catch (e) {
         res.status(400).send({ error: 'Registration failed ' });
         console.log(e)
     }
 });
 
-router.post("/authenticate", async (req, res) => {
+router.post("/authenticate", async (req, res) => {  
     const { email, password } = req.body;
 
     const user = await User.findOne({ email }).select('+password');
@@ -42,11 +52,12 @@ router.post("/authenticate", async (req, res) => {
 
     user.password = undefined;
 
-    const token = jwt.sign({ id: user._id }, authConfig.secret, {
-        expiresIn: 86400,
-    })
+    const token = 
 
-    res.send({ user, token });
+    res.send({ 
+        user, 
+        token: generateToken({ id: user.id })
+    });
 });
 
 router.post('/forgot_password', async (req, res) => {
@@ -121,4 +132,5 @@ router.post('/reset_password', async (req, res) => {
         res.status(400).send({ error: "Cannot reset password, try again!", return: err })
     }
 });
+
 module.exports = app => app.use('/auth', router);

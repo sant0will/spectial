@@ -17,9 +17,43 @@ export default function Login({ history }) {
     const [confirmed, setConfirmed] = useState('Senhas não conferem');
     const [isLoading, setIsLoading] = useState(false);
 
-
-    function login(e) {
+    async function login(e) {
         e.preventDefault();
+        setIsLoading(true);
+
+        try {
+            if (verifyFields()){
+                const response = await api.post('/auth/authenticate', {
+                    email,
+                    password,
+                });
+
+                console.log(response);
+
+                const { data, status } = response;
+
+                if (status === 200) {
+                    document.getElementById('login-id').classList.add("selected-type");
+                    document.getElementById('register-id').classList.remove("selected-type");
+                    document.getElementsByClassName("link-register")[0].style.display = 'none';
+                    document.getElementsByClassName("link-login")[0].style.display = 'flex';
+                    setType('Login');
+                    setIsLoading(false);
+
+                    history.push("/dashboard", { user: data })
+                } else {
+                    setAlert(['danger', true]);
+                    setMsgAlert('Falha no login!');
+                    setIsLoading(false);
+                }
+            }else{
+                setIsLoading(false);
+            }
+        } catch (error) {
+            setAlert(['danger', true]);
+            setMsgAlert('Falha nos campos, verifique e tente novamente.');
+            setIsLoading(false);
+        }
 
         console.log(email, password);
 
@@ -48,9 +82,9 @@ export default function Login({ history }) {
                     document.getElementsByClassName("link-register")[0].style.display = 'none';
                     document.getElementsByClassName("link-login")[0].style.display = 'flex';
                     setType('Login');
-                    setAlert(['success', true]);
-                    setMsgAlert('Usuário cadastrado com sucesso! Realize o login')
                     setIsLoading(false);
+
+                    history.push("/dashboard", { user: data })
                 } else {
                     setAlert(['danger', true]);
                     setMsgAlert('Falha ao cadastrar usuário!');
@@ -69,42 +103,38 @@ export default function Login({ history }) {
     }
 
     function verifyFields() {
-        if(name === '' || email === '' || password === '' || confirmPassword === '' || role === ''){
-            setAlert(['danger', true]);
-            setMsgAlert('Campos obrigatórios não preenchidos, confira os dados.');
-            return false;
-        }
+        if(type === 'Register'){
+            if(name === '' || email === '' || password === '' || confirmPassword === '' || role === ''){
+                setAlert(['danger', true]);
+                setMsgAlert('Campos obrigatórios não preenchidos, confira os dados.');
+                return false;
+            }
 
-        if (email.match(regexEmail) === null) {
-            setAlert(['danger', true]);
-            setMsgAlert('E-mail com formato inválido.');
-            return false;
-        }
+            if (name.length < 10) {
+                setAlert(['danger', true]);
+                setMsgAlert('Nome muito curto, adicione mais caracteres.');
+                return false;
+            }
+    
+            if (role === '') {
+                setAlert(['danger', true]);
+                setMsgAlert('Selecione o tipo de acesso.');
+                return false;
+            }
+        }else{
 
-        if (password !== confirmPassword) {
-            setAlert(['danger', true]);
-            setMsgAlert('Senhas não conferem.');
-            return false;
+            if(email === '' || password === ''){
+                setAlert(['danger', true]);
+                setMsgAlert('Campos obrigatórios não preenchidos, confira os dados.');
+                return false;
+            }            
+    
+            if (email.match(regexEmail) === null) {
+                setAlert(['danger', true]);
+                setMsgAlert('E-mail com formato inválido.');
+                return false;
+            }
         }
-
-        if (password === confirmPassword && password.length < 8) {
-            setAlert(['danger', true]);
-            setMsgAlert('Senha muito curta, minimo de 8 caracteres.');
-            return false;
-        }
-
-        if (name.length < 10) {
-            setAlert(['danger', true]);
-            setMsgAlert('Nome muito curto, adicione mais caracteres.');
-            return false;
-        }
-
-        if (role === '') {
-            setAlert(['danger', true]);
-            setMsgAlert('Selecione o tipo de acesso.');
-            return false;
-        }
-
 
         return true
     }
@@ -163,7 +193,6 @@ export default function Login({ history }) {
 
                 {
                     alert[1] ?
-
                         <Alert style={{ fontSize: 12 }} color={alert[0]}>
                             {msgAlert}
                         </Alert>
@@ -197,7 +226,13 @@ export default function Login({ history }) {
                         type="button"
                         className="login-button"
                     >
-                        Entrar
+                        {
+                            isLoading ?
+                                <Spinner color="light" style={{ marginLeft: '50%', width: '1rem', height: '1rem', alignSelf: 'center' }} />
+                                :
+                                "Entrar"
+                        }
+
                     </button>
                 </div>
                 <div className="link-register" style={{ display: 'none' }}>
