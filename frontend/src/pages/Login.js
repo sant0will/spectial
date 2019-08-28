@@ -40,6 +40,8 @@ export default function Login({ history }) {
                     setType('Login');
                     setIsLoading(false);
 
+                    localStorage.setItem('auth-token', data.token);
+
                     history.push("/dashboard", { user: data })
                 } else {
                     setAlert(['danger', true]);
@@ -83,6 +85,8 @@ export default function Login({ history }) {
                     document.getElementsByClassName("link-login")[0].style.display = 'flex';
                     setType('Login');
                     setIsLoading(false);
+
+                    localStorage.setItem('auth-token', data.token);
 
                     history.push("/dashboard", { user: data })
                 } else {
