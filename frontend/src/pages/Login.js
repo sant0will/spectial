@@ -6,6 +6,8 @@ import { Alert, Spinner } from 'reactstrap';
 const regexEmail = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
 export default function Login({ history }) {
+    let auth = localStorage.setItem('auth-token', null);
+    console.log(auth);
     const [type, setType] = useState('Login');
     const [name, setName] = useState('');
     const [role, setRole] = useState('');
