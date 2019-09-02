@@ -1,4 +1,4 @@
-# Spectial
+# Spectial [EN](https://github.com/sant0will/spectial/blob/master/README.md) | [PT-BR](https://github.com/sant0will/spectial/blob/master/README-pt.md)
 
 O spectial é uma plataforma open-source que possibilita ao educador total liberdade e criatividade na apresentação dos conteudos e na aplicação de provas, para alunos com necessidades especiais.
 O foco é utilizar formas sensoriais para ativar os 5 sentidos de maneira á atender as necessidades de cada aluno.
