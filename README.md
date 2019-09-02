@@ -1,22 +1,22 @@
 # Spectial [EN](https://github.com/sant0will/spectial/blob/master/README.md) | [PT-BR](https://github.com/sant0will/spectial/blob/master/README-pt.md)
 
-O spectial é uma plataforma open-source que possibilita ao educador total liberdade e criatividade na apresentação dos conteudos e na aplicação de provas, para alunos com necessidades especiais.
-O foco é utilizar formas sensoriais para ativar os 5 sentidos de maneira á atender as necessidades de cada aluno.
+Spectial is an open-source platform that gives the educator complete freedom and creativity in presenting content and applying tests for students with special needs.
+The focus is to use sensory forms to activate the 5 senses to meet the needs of each student.
 
-## Instalação
-Para obter a aplicação basta clonar o projeto com o seguinte comando:
+## Installation
+Clone the project with the command:
 
 ``` git clone https://github.com/sant0will/spectial.git ```
 
-ou realizar o download atraves desse [link](https://github.com/sant0will/spectial/archive/master.zip).
+or download zip file in this [link](https://github.com/sant0will/spectial/archive/master.zip).
 
-## Estrutura
-O projeto é divido essencialmente em duas partes, backend que corresponde ao servidor 
-[Node.js 10.16.3](https://nodejs.org/en/about/) e [express 4.17.1](https://expressjs.com/pt-br/guide/routing.html).
-O frontend é desenvolvido utilizando a biblioteca JavaScript [React 16.8.6](https://pt-br.reactjs.org/docs/getting-started.html) e pacotes de design.
+## Structure
+The project is essentially divided into two parts, backend that corresponds to the server.
+[Node.js 10.16.3] (https://nodejs.org/en/about/) and [express 4.17.1] (https://expressjs.com/guide/routing.html).
+The frontend is developed using the JavaScript library [React 16.8.6] (https://reactjs.org/docs/getting-started.html) and design packages.
 
 ### Backend
-Para habilitar o funcionamento do servidor, siga os comandos a seguir:
+To go up the server, use these commands:
 
 ```
 > cd backend
@@ -25,13 +25,13 @@ Para habilitar o funcionamento do servidor, siga os comandos a seguir:
   Server is running in 3000 port
 ```
 ### Frontend
-Para executar a aplicação basta seguir os comandos:
+To go up the aplication, use these commands:
 
 ```
 > cd frontend
 > npm install \\ ou yarn install
 > npm start \\ yarn start
 ```
-## Contribuição
-O projeto está em desenvolvimento e visa melhorar cada vez mais a qualidade de ensino para pessoas com algum tipo de deficiência. 
-Sinta-se a vontade para cooperar e nos ajudar nessa jornada.
+## Contributing
+The project is under development and the goal is to improve the quality of education for people with disabilities.
+Feel free to cooperate and help us on this journey.
