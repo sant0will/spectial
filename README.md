@@ -20,7 +20,7 @@ To go up the server, use these commands:
 
 ```
 > cd backend
-> npm install \\ ou yarn install
+> npm install \\ or yarn install
 > node src/index.js
   Server is running in 3000 port
 ```
@@ -29,8 +29,8 @@ To go up the aplication, use these commands:
 
 ```
 > cd frontend
-> npm install \\ ou yarn install
-> npm start \\ yarn start
+> npm install \\ or yarn install
+> npm start \\ or yarn start
 ```
 ## Contributing
 The project is under development and the goal is to improve the quality of education for people with disabilities.
