@@ -1,0 +1,6 @@
+[submodule "spectial-frontend"]
+	path = spectial-frontend
+	url = https://github.com/sant0will/spectial-frontend
+[submodule "spectial-backend"]
+	path = spectial-backend
+	url = https://github.com/sant0will/spectial-backend
